@@ -1,38 +1,32 @@
-# Implementation Plan: Parcel Collection Tracking System
+# Pelan Implementasi: Parcel Collection Tracking System
 
-**Date:** 2026-01-16
+Fail ini menerangkan langkah-langkah teknikal yang akan diambil untuk membina sistem penjejakan parcel.
 
-This document outlines the technical steps to build the system using Python (Flask) and MySQL.
+## Fasa 1: Penyediaan Pangkalan Data (Database)
+- **Fail: `schema.sql`**
+- Membina table `admins` untuk menyimpan maklumat log masuk pentadbir.
+- Membina table `parcels` untuk menyimpan maklumat parcel (Tracking No, Nama, No. Telefon, Status).
+- Menambah akaun admin default untuk tujuan testing.
 
-## Phase 1: Database Setup
-- **File: `database.sql`**
-    - Create `parcels` table with columns: `id`, `tracking_code`, `recipient_name`, `phone_number`, `status` (Pending/Collected), `created_at`.
-    - Create `admins` table for potential future auth (optional for MVP).
+## Fasa 2: Pembangunan Backend (Logic & API)
+- **Fail: `api/db.php`**: Menguruskan sambungan ke MySQL menggunakan PDO.
+- **Fail: `api/auth.php`**: Logik pengesahan (Login/Logout) bagi Admin.
+- **Fail: `api/parcels.php`**: 
+    - Fungsi **Tambah**, **Padam**, dan **Kemaskini Status** parcel (untuk Admin).
+    - Fungsi **Carian (Track)** parcel (untuk User).
 
-## Phase 2: Backend Development (Python/Flask)
-- **File: `app.py`**
-    - Main Flask application file.
-    - Routes:
-        - `/`: Serve the User Tracking Page.
-        - `/admin`: Serve the Admin Insert Page.
-        - `/api/search`: Endpoint to search for parcels.
-        - `/api/add`: Endpoint to add new parcels.
-- **File: `db.py`**
-    - Module to handle MySQL database connections.
+## Fasa 3: Pembangunan Frontend (UI/UX)
+- **Fail: `assets/css/style.css`**: Sistem gaya (styling) moden, premium, dan responsif.
+- **Fail: `index.html`**: Halaman utama bagi User untuk membuat semakan.
+- **Fail: `admin/login.html`**: Halaman log masuk bagi Admin.
+- **Fail: `admin/dashboard.html`**: Halaman pengurusan parcel bagi Admin.
+- **Fail: `assets/js/user.js` & `assets/js/admin.js`**: Logik interaksi (AJAX) untuk kelancaran sistem tanpa muat semula halaman (no page reload).
 
-## Phase 3: Frontend Development (UI/UX)
-- **File: `static/style.css`**
-    - High-quality, premium design CSS.
-- **File: `templates/index.html`**
-    - User facing page. Input fields: Name, Phone, Last 4 digits of Parcel ID.
-- **File: `templates/admin.html`**
-    - Admin facing page. Input fields for new parcel details.
-
-## Phase 4: Integration & Testing
-1.  **Backend Test**: Verify Flask can connect to XAMPP MySQL.
-2.  **Admin Test**: Insert a parcel via the Admin UI and verify it appears in the database.
-3.  **User Test**: Search for the parcel using the web form and verify the correct status is returned.
-4.  **UI Polish**: Ensure animations and layout look premium.
+## Fasa 4: Pengujian (Testing)
+1. Uji keupayaan admin untuk log masuk.
+2. Uji kemasukan data parcel baharu.
+3. Uji fungsi carian dari pihak user menggunakan butiran yang betul.
+4. Uji pertukaran status parcel daripada "Pending" kepada "Collected".
 
 ---
-*Note: Ensure XAMPP MySQL service is running before starting the Flask app.*
+**Nota**: Implementasi ini akan memastikan sistem adalah ringan, pantas, dan mudah untuk di-deploy ke pelayan XAMPP.

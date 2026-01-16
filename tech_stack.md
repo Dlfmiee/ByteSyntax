@@ -1,28 +1,22 @@
 # Technology Stack
 
-For the **Parcel Collection Tracking System**, the following tech stack will be used:
-
-## 📅 Date
-**Last Updated:** 2026-01-16
+Bagi projek **Parcel Collection Tracking System**, berikut adalah tech stack yang digunakan:
 
 ## 🖥️ Server Stack
-- **XAMPP**: Software package containing Apache (Web Server) and MySQL (Database). Apache will serve the frontend or reverse proxy, or we can run Flask standalone during dev.
-- **Python**: Runtime environment for the backend logic.
+- **XAMPP**: Pakej perisian yang mengandungi Apache (Web Server) dan MySQL (Database).
 
 ## 🗄️ Database
-- **MySQL / MariaDB**: To store parcel records, admin details, and collection status.
-- **MySQL Connector/Python**: Driver for connecting Python to MySQL.
+- **MySQL / MariaDB**: Untuk menyimpan rekod parcel, maklumat admin, dan status kutipan.
+- **PDO (PHP Data Objects)**: Digunakan untuk sambungan database yang lebih selamat dan efisien.
 
 ## ⚙️ Backend
-- **Python (Flask)**: Lightweight web framework to handle API requests, routing, and database logic.
-- **Flask-Cors**: To handle Cross-Origin Resource Sharing if frontend/backend are separated (though using templates is simpler).
+- **PHP**: Bahasa pengaturcaraan utama untuk logik sistem, pengurusan akaun admin, dan pemprosesan data parcel.
 
 ## 🎨 Frontend
-- **HTML5**: semantic structure of the website.
-- **Vanilla CSS**: Premium, modern styling (Glassmorphism, vibrant colors) without heavy frameworks.
-- **JavaScript (ES6+)**: For dynamic interactions (AJAX/Fetch) and form handling.
+- **HTML5**: Struktur laman web.
+- **Vanilla CSS**: Penggayaan UI yang moden, premium, dan responsif tanpa menggunakan framework berat.
+- **JavaScript (ES6+)**: Digunakan untuk interaksi dinamik (seperti AJAX untuk carian tanpa reload).
 
 ## 🛠️ Tools
-- **VS Code**: Code editor.
-- **Web Browser**: For testing (Chrome/Edge/Firefox).
-- **Postman/Curl**: For checking API endpoints (optional).
+- **VS Code**: Editor kod untuk pembangunan.
+- **Web Browser**: Untuk testing (Chrome/Edge/Firefox).
