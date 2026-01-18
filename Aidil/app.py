@@ -18,7 +18,18 @@ def get_connection():
 # ---------- USERS ROUTES ----------
 @app.route("/")
 def home():
-    return render_template('index.html')
+    parcels = []
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        # Fetch parcels created today for the scrolling section
+        cursor.execute("SELECT * FROM parcels WHERE DATE(created_at) = CURDATE() ORDER BY created_at DESC")
+        parcels = cursor.fetchall()
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error fetching daily updates: {e}")
+    return render_template('index.html', parcels=parcels)
 
 @app.route("/help")
 def help_page():
@@ -191,4 +202,4 @@ def update_status():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
