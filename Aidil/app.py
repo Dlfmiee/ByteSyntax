@@ -142,9 +142,14 @@ def admin_dashboard():
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM parcels ORDER BY created_at DESC LIMIT 50")
         parcels = cursor.fetchall()
+
+        # Fetch messages for admin to manage
+        cursor.execute("SELECT * FROM messages ORDER BY created_at DESC")
+        messages = cursor.fetchall()
+
         cursor.close()
         conn.close()
-        return render_template("admin.html", parcels=parcels)
+        return render_template("admin.html", parcels=parcels, messages=messages)
     except Exception as e:
         return f"Database Error: {e}"
 
@@ -198,6 +203,70 @@ def update_status():
         cursor.close()
         conn.close()
         return jsonify({"message": "Status updated"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ---------- SERVICE & FORUM ROUTES ----------
+@app.route("/service")
+def service_page():
+    return render_template('service.html')
+
+@app.route("/forum")
+def forum_page():
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        # Fetch all messages, ordered by newest first
+        cursor.execute("SELECT * FROM messages ORDER BY created_at DESC")
+        messages = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return render_template('forum.html', messages=messages)
+    except Exception as e:
+        return f"Error loading forum: {e}"
+
+@app.route("/api/send_message", methods=["POST"])
+def send_message():
+    data = request.json
+    name = data.get("name")
+    message = data.get("message")
+
+    if not name or not message:
+        return jsonify({"error": "Name and Message are required"}), 400
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        sql = "INSERT INTO messages (sender_name, message) VALUES (%s, %s)"
+        cursor.execute(sql, (name, message))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Message sent successfully!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/reply_message", methods=["POST"])
+def reply_message():
+    if not session.get("logged_in"):
+         return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.json
+    message_id = data.get("id")
+    reply = data.get("reply")
+
+    if not message_id or not reply:
+        return jsonify({"error": "Message ID and Reply content are required"}), 400
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        sql = "UPDATE messages SET reply = %s, status = 'Replied' WHERE id = %s"
+        cursor.execute(sql, (reply, message_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({"message": "Reply sent successfully!"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
